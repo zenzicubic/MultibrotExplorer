@@ -20,7 +20,7 @@
 		<input type="range" min="10" max="300" value="100" id="sizeRange" onchange="updateSize()">
 		<p>Power:</p>
 		<select id="powSelect" onchange="setPow()">
-			<option value="2">2</option>
+			<option value="2">2 (the bog-standard Mandelbrot set)</option>
 			<option value="3" selected>3</option>
 			<option value="4">4</option>
 			<option value="5">5</option>
@@ -32,6 +32,7 @@
 		</select>
 		<p id="a1a" onclick="showdiv('a1')" class="addendum"><b>+ What is this?</b></p>
 		<p id="a1" hidden>Welcome to the Multibrot Explorer, an online tool to look down into the depths of the Mandelbrot set from powers 2-6. Just click to zoom in on a small slice of the fractal centered at the tip of your mouse and explore the beautiful world hidden within! However, due to the nature of the calculations, it is a little slow. Programmed by <a href="https://zenzicubic.tk" target="_blank">Zenzicubic</a>. More information on the math <a href="https://zenzicubic.tk/mandelbrot" target="_blank">here.</a></p>
+		<a href="https://github.com/zenzicubic/MultibrotExplorer">Source</a>
 	</div>
 	<p id="info"></p>
 	<button id="hide" onclick="hideUI()">Hide menu</button>
