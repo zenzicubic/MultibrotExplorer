@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Multibrot Explorer</title>
+	<link rel="shortcut icon" href="assets/icon.png">
+	<link rel="stylesheet" href="assets/style.css">
+	<script src="assets/complex.js"></script>
+	<script src="assets/ui.js"></script>
+	<script src="engine.js"></script>
+</head>
+<body>
+	<canvas id="canvas" width="800" height="800"></canvas>
+	<div id="menu">
+		<h1>Menu</h1>
+		<button onclick="resetZoom()">Reset Zoom</button>
+		<button onclick="resetParams()">Reset Parameters</button>
+		<p>Iterations: <span id="iter">100</span></p>
+		<input type="range" min="1" max="500" value="100" id="max" onchange="updateIter()">
+		<p>Zoom Area: <span id="sizeDisp">120x56 px</span></p>
+		<input type="range" min="10" max="300" value="100" id="sizeRange" onchange="updateSize()">
+		<p>Power:</p>
+		<select id="powSelect" onchange="setPow()">
+			<option value="2">2</option>
+			<option value="3" selected>3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<p id="a1a" onclick="showdiv('a1')" class="addendum"><b>+ What is this?</b></p>
+		<p id="a1" hidden>Welcome to the Multibrot Explorer, an online tool to look down into the depths of the Mandelbrot set from powers 2-6. Just click to zoom in on a small slice of the fractal centered at the tip of your mouse and explore the beautiful world hidden within! However, due to the nature of the calculations, it is a little slow. Programmed by <a href="https://zenzicubic.tk" target="_blank">Zenzicubic</a>. More information on the math <a href="https://zenzicubic.tk/mandelbrot" target="_blank">here.</a></p>
+	</div>
+	<p id="info"></p>
+	<button id="hide" onclick="hideUI()">Hide menu</button>
+</body>
+</html>

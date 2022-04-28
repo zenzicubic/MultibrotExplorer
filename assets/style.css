@@ -1,0 +1,83 @@
+#canvas {
+  padding: 0;
+  margin: auto;
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+button:hover, input[type=submit]:hover {
+  background-color: #FA9500;
+}
+
+button, input[type=submit] {
+  border-radius: 10px;
+  background-color: #EB6424;
+  border: none;
+  color: #080705;
+  padding: 8px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  color: #FFDAC6;
+  height: 50px;
+  padding-right: 20px
+}
+
+p, h1, h3, a, label {
+  background-color: #FFDAC6;
+  color: #080705;
+  font-family: Arial;
+}
+
+body {
+  background-color: #FFDAC6;
+}
+
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+hr {
+  background-color: #080705;
+  border-color: #080705;
+  height: 1px;
+}
+
+#hide {
+  position: absolute;
+  top: 0.2%;
+  left: 0.2%;
+}
+
+#info {
+  position: absolute;
+  bottom: 0.2%;
+  left: 0.2%;
+}
+
+#menu {
+  text-align: center;
+  width: 20%;
+  background-color: #FFDAC6;
+  position: absolute;
+  top: 0.2%;
+  right: 0.2%;
+  border: 1px solid #010101;
+}
+
+.addendum {
+  font-size:20;
+  color:#EB6424;
+}
+
+.addendum:hover {
+  color:#FA9500;
+}
