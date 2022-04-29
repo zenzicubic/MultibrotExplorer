@@ -54,7 +54,7 @@ function resetZoom() {
 	zoomY = (ySize / 2);
 	zoomSizeX = xSize;
 	zoomSizeY = ySize;
-	setTimeout(dispSet, 30);
+	setTimeout(dispSet, 50);
 }
 
 function dispSet() {
@@ -144,7 +144,7 @@ function zoom(e) {
 	zoomY = map(e.pageY, 0, ySize, zoomStartY, zoomEndY);
 	zoomSizeX = map(boxSize, 0, xSize, 0, zoomSizeX)
 	zoomSizeY = map(boxSize * yRatio, 0, ySize, 0, zoomSizeY)
-	setTimeout(dispSet, 100);
+	setTimeout(dispSet, 50);
 }
 
 function resetParams() {
@@ -163,7 +163,7 @@ function resetParams() {
 	// reset power and display
 	powBox.value = 3;
 	pow = 3;
-	setTimeout(dispSet, 30);
+	setTimeout(dispSet, 50);
 }
 
 function dispLoading() {
