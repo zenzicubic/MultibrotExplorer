@@ -131,7 +131,7 @@ function updateSize() {
 }
 
 function zoom(e) {
-	dispElt.innerHTML = "Loading...this may take a minute.";
+	dispElt.innerHTML = "Loading...this may take a minute...";
 
 	// various zoom-related scaling factors
 	let zoomStartX = zoomX - (zoomSizeX / 2);
