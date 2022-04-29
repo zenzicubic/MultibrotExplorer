@@ -46,6 +46,17 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 })
 
+
+function resetZoom() {
+	dispLoading();
+	// reset the zoom params
+	zoomX = (xSize / 2);
+	zoomY = (ySize / 2);
+	zoomSizeX = xSize;
+	zoomSizeY = ySize;
+	setTimeout(dispSet, 50);
+}
+
 function dispSet() {
 	// calculate zoom params
 	let startX = zoomX - (zoomSizeX / 2);
@@ -102,7 +113,7 @@ function setPow() {
 	// set the power of the mandelbrot set
 	let val = powBox.value;
 	pow = parseInt(val, 10);
-	setTimeout(dispSet, 100);
+	setTimeout(dispSet, 30);
 }
 
 function updateIter() {
@@ -110,7 +121,7 @@ function updateIter() {
 	// set the max iterations
 	maxIter = maxElt.value;
 	iterElt.innerHTML = maxIter;
-	setTimeout(dispSet, 100);
+	setTimeout(dispSet, 30);
 }
 
 function updateSize() {
@@ -152,17 +163,7 @@ function resetParams() {
 	// reset power and display
 	powBox.value = 3;
 	pow = 3;
-	setTimeout(dispSet, 100);
-}
-
-function resetZoom() {
-	dispLoading();
-	// reset the zoom params
-	zoomX = (xSize / 2);
-	zoomY = (ySize / 2);
-	zoomSizeX = xSize;
-	zoomSizeY = ySize;
-	setTimeout(dispSet, 100);
+	setTimeout(dispSet, 50);
 }
 
 function dispLoading() {
