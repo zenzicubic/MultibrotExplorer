@@ -1,7 +1,5 @@
 let canvas;
 let ctx;
-let image;
-
 let xSize;
 let ySize;
 let yRatio;
@@ -11,7 +9,7 @@ let zoomY;
 let zoomSizeX;
 let zoomSizeY;
 
-let BAILOUT = 4;
+let BAILOUT = 5;
 let maxIter = 100;
 let pow = 3;
 let boxSize = 120;
@@ -58,31 +56,8 @@ function resetZoom() {
 	dispSet();
 }
 
-function drawSet() {
-	// update text
-	let a = map(zoomX, 0, xSize, -3, 3);
-	let b = map(zoomY, 0, ySize, -3 * yRatio, 3 * yRatio);
-	let sign = (Math.sign(b) == -1 ? "" : "+");
-	dispElt.innerHTML = `Centered at ${a}${sign}${b}i.`
-
-	// render set
-	ctx.clearRect(0, 0, xSize, ySize);
-	for (let y = 0; y < ySize; y ++) {
-		for (let x = 0; x < xSize; x ++) {
-			// compute colors
-			let cur = image[y][x];
-			let hue = (cur / maxIter) * 360.0;
-			let brightness = (cur == maxIter ? 0 : 50);
-			ctx.fillStyle = `hsl(${hue},100%,${brightness}%)`;
-
-			// put point
-			ctx.fillRect(x, y, 1, 1);
-		}
-	}
-}
-
 function dispSet() {
-	image = [];
+	ctx.clearRect(0, 0, xSize, ySize);
 
 	// calculate zoom params
 	let startX = zoomX - (zoomSizeX / 2);
@@ -92,20 +67,29 @@ function dispSet() {
 
 	// now zoom
 	for (let y = 0; y < ySize; y ++) {
-		let curRow = [];
 		let curX = startX;
 		for (let x = 0; x < xSize; x ++) {
 			// set points
 			let re = map(curX, 0, xSize, -3, 3);
 			let im = map(curY, 0, ySize, -3 * yRatio, 3 * yRatio);
 			let pt = testLegibility(re, im);
-			curRow.push(pt);
+			
+			// calculate HSB color
+			let hue = (pt / maxIter) * 360.0;
+			let brightness = (pt == maxIter ? 0 : 50);
+			ctx.fillStyle = `hsl(${hue},100%,${brightness}%)`;
+			ctx.fillRect(x, y, 1, 1);
+
 			curX += xFac;
 		}
-		image.push(curRow);
 		curY += yFac;
 	}
-	drawSet();
+
+	// update text
+	let a = map(zoomX, 0, xSize, -3, 3);
+	let b = map(zoomY, 0, ySize, -3 * yRatio, 3 * yRatio);
+	let sign = (Math.sign(b) == -1 ? "" : "+");
+	dispElt.innerHTML = `Centered at ${a}${sign}${b}i.`
 }
 
 function map(n, a, b, c, d) {
@@ -119,7 +103,7 @@ function testLegibility(re, im) {
 	let n = 0;
 	while (n < maxIter) {
 		z = z.pow(pow).add(c);
-		if (z.magnitude() > BAILOUT) break;
+		if (Math.abs(z.re + z.im) > BAILOUT) break;
 		n ++;
 	}
 	return n;
@@ -147,6 +131,8 @@ function updateSize() {
 }
 
 function zoom(e) {
+	dispElt.innerHTML = "Loading...this may take a minute.";
+
 	// various zoom-related scaling factors
 	let zoomStartX = zoomX - (zoomSizeX / 2);
 	let zoomStartY = zoomY - (zoomSizeY / 2);
@@ -158,7 +144,7 @@ function zoom(e) {
 	zoomY = map(e.pageY, 0, ySize, zoomStartY, zoomEndY);
 	zoomSizeX = map(boxSize, 0, xSize, 0, zoomSizeX)
 	zoomSizeY = map(boxSize * yRatio, 0, ySize, 0, zoomSizeY)
-	dispSet();
+	setTimeout(dispSet, 100);
 }
 
 function resetParams() {
