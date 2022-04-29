@@ -144,7 +144,7 @@ function resetParams() {
 	// reset iterations
 	maxIter = 100;
 	iterElt.innerHTML = "100";
-	maxElt.innerHTML = 100;
+	maxElt.value = 100;
 	let boxWidth = Math.round(120 * yRatio);
 
 	// reset zoom size
