@@ -29,12 +29,11 @@ document.addEventListener("DOMContentLoaded", function() {
 	sizeDispElt = document.getElementById("sizeDisp");
 	sizeElt = document.getElementById("sizeRange");
 	maxElt = document.getElementById("max");
-	powBox = document.getElementById("powSelect")
-	canvas.addEventListener("click", zoom);
+	powBox = document.getElementById("powSelect");
 
+	canvas.addEventListener("click", zoom);
 	if (canvas.getContext) {
 	    ctx = canvas.getContext('2d');
-
 	    // calculate sizing params
 		xSize = window.innerWidth;
 		ySize = window.innerHeight;
@@ -49,23 +48,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 function resetZoom() {
+	dispLoading();
+	// reset the zoom params
 	zoomX = (xSize / 2);
 	zoomY = (ySize / 2);
 	zoomSizeX = xSize;
 	zoomSizeY = ySize;
-	dispSet();
+	setTimeout(dispSet, 30);
 }
 
 function dispSet() {
-	ctx.clearRect(0, 0, xSize, ySize);
-
 	// calculate zoom params
 	let startX = zoomX - (zoomSizeX / 2);
 	let curY = zoomY - (zoomSizeY / 2);
 	let xFac = (zoomSizeX / xSize);
 	let yFac = (zoomSizeY / ySize);
 
-	// now zoom
+	ctx.clearRect(0, 0, xSize, ySize);
 	for (let y = 0; y < ySize; y ++) {
 		let curX = startX;
 		for (let x = 0; x < xSize; x ++) {
@@ -110,17 +109,19 @@ function testLegibility(re, im) {
 }
 
 function setPow() {
+	dispLoading();
 	// set the power of the mandelbrot set
 	let val = powBox.value;
 	pow = parseInt(val, 10);
-	dispSet();
+	setTimeout(dispSet, 30);
 }
 
 function updateIter() {
+	dispLoading();
 	// set the max iterations
 	maxIter = maxElt.value;
 	iterElt.innerHTML = maxIter;
-	dispSet();
+	setTimeout(dispSet, 30);
 }
 
 function updateSize() {
@@ -131,8 +132,7 @@ function updateSize() {
 }
 
 function zoom(e) {
-	dispElt.innerHTML = "Loading...this may take a minute...";
-
+	dispLoading();
 	// various zoom-related scaling factors
 	let zoomStartX = zoomX - (zoomSizeX / 2);
 	let zoomStartY = zoomY - (zoomSizeY / 2);
@@ -148,6 +148,7 @@ function zoom(e) {
 }
 
 function resetParams() {
+	dispLoading();
 	// reset iterations
 	maxIter = 100;
 	iterElt.innerHTML = "100";
@@ -162,5 +163,9 @@ function resetParams() {
 	// reset power and display
 	powBox.value = 3;
 	pow = 3;
-	dispSet();
+	setTimeout(dispSet, 30);
+}
+
+function dispLoading() {
+	dispElt.innerHTML = "Loading...this may take a minute...";
 }
