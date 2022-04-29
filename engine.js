@@ -53,6 +53,7 @@ function dispSet() {
 	let xFac = (zoomSizeX / xSize);
 	let yFac = (zoomSizeY / ySize);
 
+	let startTime = new Date();
 	ctx.clearRect(0, 0, xSize, ySize);
 	for (let y = 0; y < ySize; y ++) {
 		let curX = startX;
@@ -73,11 +74,13 @@ function dispSet() {
 		curY += yFac;
 	}
 
-	// update text
+	// update text and time it
+	let endTime = new Date();
+	let delta = (endTime - startTime) / 1000; 
 	let a = map(zoomX, 0, xSize, -3, 3);
 	let b = map(zoomY, 0, ySize, -3 * yRatio, 3 * yRatio);
 	let sign = (Math.sign(b) == -1 ? "" : "+");
-	dispElt.innerHTML = `Centered at ${a}${sign}${b}i.`
+	dispElt.innerHTML = `Centered at ${a}${sign}${b}i.<br>Rendered in ${delta} seconds.`
 }
 
 function map(n, a, b, c, d) {
