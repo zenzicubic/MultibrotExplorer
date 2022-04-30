@@ -134,7 +134,7 @@ function zoom(e) {
 	zoomSizeX = map(boxSize, 0, xSize, 0, zoomSizeX)
 	zoomSizeY = map(boxSize * yRatio, 0, ySize, 0, zoomSizeY)
 
-	if (zoomSizeY > 10e-100) {
+	if (zoomSizeY > 7e-11) {
 		dispLoading();
 		zoomX = map(e.pageX, 0, xSize, zoomStartX, zoomEndX);
 		zoomY = map(e.pageY, 0, ySize, zoomStartY, zoomEndY);
