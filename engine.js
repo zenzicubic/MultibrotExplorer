@@ -124,7 +124,6 @@ function updateSize() {
 }
 
 function zoom(e) {
-	dispLoading();
 	// various zoom-related scaling factors
 	let zoomStartX = zoomX - (zoomSizeX / 2);
 	let zoomStartY = zoomY - (zoomSizeY / 2);
@@ -132,11 +131,17 @@ function zoom(e) {
 	let zoomEndY = zoomY + (zoomSizeY / 2);
 
 	// map the zoom to the coords and render
-	zoomX = map(e.pageX, 0, xSize, zoomStartX, zoomEndX);
-	zoomY = map(e.pageY, 0, ySize, zoomStartY, zoomEndY);
 	zoomSizeX = map(boxSize, 0, xSize, 0, zoomSizeX)
 	zoomSizeY = map(boxSize * yRatio, 0, ySize, 0, zoomSizeY)
-	setTimeout(dispSet, 50);
+
+	if (zoomSizeY > 10e-100) {
+		dispLoading();
+		zoomX = map(e.pageX, 0, xSize, zoomStartX, zoomEndX);
+		zoomY = map(e.pageY, 0, ySize, zoomStartY, zoomEndY);
+		setTimeout(dispSet, 50);
+	} else {
+		dispElt.innerHTML = "Depth limit reached.";
+	}
 }
 
 function resetParams() {
