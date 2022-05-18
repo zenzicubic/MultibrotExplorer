@@ -54,7 +54,7 @@ function dispSet() {
 	let yFac = (zoomSizeY / ySize);
 
 	let startTime = new Date();
-	ctx.clearRect(0, 0, xSize, ySize);
+	let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	for (let y = 0; y < ySize; y ++) {
 		let curX = startX;
 		for (let x = 0; x < xSize; x ++) {
@@ -63,16 +63,23 @@ function dispSet() {
 			let im = map(curY, 0, ySize, -3 * yRatio, 3 * yRatio);
 			let pt = testLegibility(re, im);
 			
-			// calculate HSB color
-			let hue = (pt / maxIter) * 360.0;
-			let brightness = (pt == maxIter ? 0 : 50);
-			ctx.fillStyle = `hsl(${hue},100%,${brightness}%)`;
-			ctx.fillRect(x, y, 1, 1);
+			// calculate HSB color and convert to RGB
+			let hue = (pt / maxIter);
+			let brightness = (pt == maxIter ? 0 : 1);
+			let rgb = HSVtoRGB(hue, 1, brightness);
+
+			// put pixel at x and y
+			let index = 4 * (x + y * xSize);
+			imageData.data[index] = rgb.r;
+			imageData.data[index + 1] = rgb.g;
+			imageData.data[index + 2] = rgb.b;
+			imageData.data[index + 3] = 255;
 
 			curX += xFac;
 		}
 		curY += yFac;
 	}
+	ctx.putImageData(imageData, 0, 0);
 
 	// update text and time it
 	let endTime = new Date();
@@ -98,6 +105,32 @@ function testLegibility(re, im) {
 		n ++;
 	}
 	return n;
+}
+
+function HSVtoRGB(h, s, v) {
+	// Taken from https://stackoverflow.com/questions/17242144/javascript-convert-hsb-hsv-color-to-rgb-accurately with slight modification
+  let r, g, b, i, f, p, q, t;
+  if (arguments.length === 1) {
+    s = h.s, v = h.v, h = h.h;
+  }
+  i = Math.floor(h * 6);
+  f = h * 6 - i;
+  p = v * (1 - s);
+  q = v * (1 - f * s);
+  t = v * (1 - (1 - f) * s);
+  switch (i % 6) {
+    case 0: r = v, g = t, b = p; break;
+    case 1: r = q, g = v, b = p; break;
+    case 2: r = p, g = v, b = t; break;
+    case 3: r = p, g = q, b = v; break;
+    case 4: r = t, g = p, b = v; break;
+    case 5: r = v, g = p, b = q; break;
+  }
+  return {
+    r: Math.round(r * 255),
+    g: Math.round(g * 255),
+    b: Math.round(b * 255)
+  };
 }
 
 function setPow() {
