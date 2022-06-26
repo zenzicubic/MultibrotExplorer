@@ -9,10 +9,11 @@ let zoomY;
 let zoomSizeX;
 let zoomSizeY;
 
-let BAILOUT = 5;
+let BAILOUT = 2;
 let maxIter = 100;
 let pow = 3;
 let boxSize = 120;
+let col1, col2;
 
 let iterElt;
 let sizeElt;
@@ -33,8 +34,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	canvas.addEventListener("click", zoom);
 	if (canvas.getContext) {
-	    ctx = canvas.getContext('2d');
-	    // calculate sizing params
+		ctx = canvas.getContext('2d');
+		col1 = new Color(239, 229, 220);
+		col2 = new Color(15, 3, 38);
+
+		// calculate sizing params
 		xSize = window.innerWidth;
 		ySize = window.innerHeight;
 		yRatio = (ySize / xSize);
@@ -55,24 +59,21 @@ function dispSet() {
 
 	let startTime = new Date();
 	let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	let curX, re, im, pt, c, index;
 	for (let y = 0; y < ySize; y ++) {
-		let curX = startX;
+		curX = startX;
 		for (let x = 0; x < xSize; x ++) {
 			// set points
-			let re = map(curX, 0, xSize, -3, 3);
-			let im = map(curY, 0, ySize, -3 * yRatio, 3 * yRatio);
-			let pt = testLegibility(re, im);
-			
-			// calculate HSB color and convert to RGB
-			let hue = (pt / maxIter);
-			let brightness = (pt == maxIter ? 0 : 1);
-			let rgb = HSVtoRGB(hue, 1, brightness);
+			re = map(curX, 0, xSize, -3, 3);
+			im = map(curY, 0, ySize, -3 * yRatio, 3 * yRatio);
+			pt = testLegibility(re, im);
 
-			// put pixel at x and y
-			let index = 4 * (x + y * xSize);
-			imageData.data[index] = rgb.r;
-			imageData.data[index + 1] = rgb.g;
-			imageData.data[index + 2] = rgb.b;
+			// calc color
+			c = col1.lerp(col2, pt / maxIter);
+			index = 4 * (x + y * xSize);
+			imageData.data[index] = c.r;
+			imageData.data[index + 1] = c.g;
+			imageData.data[index + 2] = c.b;
 			imageData.data[index + 3] = 255;
 
 			curX += xFac;
@@ -105,32 +106,6 @@ function testLegibility(re, im) {
 		n ++;
 	}
 	return n;
-}
-
-function HSVtoRGB(h, s, v) {
-	// Taken from https://stackoverflow.com/questions/17242144/javascript-convert-hsb-hsv-color-to-rgb-accurately with slight modification
-  let r, g, b, i, f, p, q, t;
-  if (arguments.length === 1) {
-    s = h.s, v = h.v, h = h.h;
-  }
-  i = Math.floor(h * 6);
-  f = h * 6 - i;
-  p = v * (1 - s);
-  q = v * (1 - f * s);
-  t = v * (1 - (1 - f) * s);
-  switch (i % 6) {
-    case 0: r = v, g = t, b = p; break;
-    case 1: r = q, g = v, b = p; break;
-    case 2: r = p, g = v, b = t; break;
-    case 3: r = p, g = q, b = v; break;
-    case 4: r = t, g = p, b = v; break;
-    case 5: r = v, g = p, b = q; break;
-  }
-  return {
-    r: Math.round(r * 255),
-    g: Math.round(g * 255),
-    b: Math.round(b * 255)
-  };
 }
 
 function setPow() {

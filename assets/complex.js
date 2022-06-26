@@ -25,7 +25,7 @@ class Complex {
 		for (let i = 0; i < n - 1; i ++) {
 			z = z.multiply(this);
 		}
-		return z
+		return z;
 	}
 
 	magnitude() {
